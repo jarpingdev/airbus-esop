@@ -111,3 +111,18 @@ rsync -avz oracle:/home/ubuntu/airbus_esop/data/ /Users/joseantonio/Developer/ai
    - Explicación a fondo de por qué NO es recomendable acumular acciones de Airbus y por qué la venta sistemática al desbloquear protege tu patrimonio contra el riesgo de concentración.
    - Guía detallada de cada opción del menú (1 a 5).
    - Detalles fiscales para el IRPF en España y guía paso a paso de operativa en Equiniti.
+
+---
+
+## 👨‍💻 Sobre el Creador / About Me
+
+> *"Automatizando lo complejo, simplificando lo cotidiano."*
+
+¡Hola! Soy **Jose Antonio** ([@jarpingdev](https://github.com/jarpingdev)).
+
+Apasionado por el desarrollo de software, la tecnología y el sector aeroespacial. Mi filosofía es simple: construir herramientas prácticas que solucionen problemas del día a día, sustituyendo la fricción y las hojas de cálculo aburridas por código limpio, automatizaciones y experiencias interactivas.
+
+* ✈️ **Visión:** Conectando ingeniería, finanzas personales y tecnología en el entorno de Airbus para que cualquiera pueda tomar decisiones informadas sin perderse en el papeleo.
+* 🐍 **Stack:** Python, arquitecturas web ligeras, automatización de sistemas (Linux/macOS), APIs y despliegues en la nube.
+* 💡 **Dato curioso:** Si un proceso se tiene que hacer más de dos veces, prefiero crear un simulador en tiempo real con fiscalidad del IRPF integrada antes que usar un Excel.
+* 📬 **Contacto:** [GitHub @jarpingdev](https://github.com/jarpingdev)
