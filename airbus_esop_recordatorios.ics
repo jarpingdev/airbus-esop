@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Airbus ESOP Manager//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+SUMMARY:✈️ Apertura Campaña Airbus ESOP 2027
+DESCRIPTION:Revisar precios de referencia y paquetes en el portal de empleados (ESP/Equiniti) para suscribir el nuevo paquete anual.
+DTSTART;VALUE=DATE:20270215
+DTEND;VALUE=DATE:20270216
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:🔓 Fin Bloqueo 3 Años ESOP 2024 (Venta disponible sin penalización fiscal)
+DESCRIPTION:Se cumplen los 3 años de tenencia de las 27 acciones de 2024. Ya se pueden vender con exención total de las 12 acciones regaladas en IRPF.
+DTSTART;VALUE=DATE:20270515
+DTEND;VALUE=DATE:20270516
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

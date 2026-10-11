@@ -1,0 +1,16 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Syncthing / Temp
+.stfolder
+.stignore
+
+# Datos locales de usuario (en GitHub Pages los datos se guardan en el navegador del usuario)
+data/
+portfolio.json
