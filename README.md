@@ -85,8 +85,8 @@ rsync -avz oracle:/home/ubuntu/airbus_esop/data/ /Users/joseantonio/Developer/ai
 
 1. **📊 Estado de Cartera en Tiempo Real:**
    - Conexión directa con la cotización oficial de Airbus en Euronext París (`AIR.PA`).
-   - Muestra tu lote de 2024 (15 pagadas + 12 regaladas = 27 acciones).
-   - Contador de días restantes hasta el desbloqueo legal de los 3 años.
+   - Cartera 100% personalizable y en blanco por defecto: registra tus propios paquetes con sus fechas y combinaciones de acciones pagadas y gratuitas de Airbus.
+   - Contador de días restantes hasta el desbloqueo legal de los 3 años por cada paquete.
    - Cálculo automático de rentabilidad bruta y valor total.
 
 2. **💰 Simulador de Venta y Fiscalidad IRPF (España):**

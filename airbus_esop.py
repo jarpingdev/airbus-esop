@@ -229,21 +229,7 @@ def load_portfolio():
     if not DATA_FILE.exists():
         DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
         initial_data = {
-            "lots": [
-                {
-                    "id": "ESOP-2024",
-                    "year": 2024,
-                    "grant_date": "2024-05-15",
-                    "unlock_date": "2027-05-15",
-                    "purchased_shares": 15,
-                    "matching_shares": 12,
-                    "total_shares": 27,
-                    "purchase_price": 150.26,
-                    "total_paid": 2253.90,
-                    "status": "LOCKED",
-                    "notes": "Paquete 15 + 12 (descuento ~44.4%)"
-                }
-            ],
+            "lots": [],
             "history": []
         }
         with open(DATA_FILE, "w", encoding="utf-8") as f:
@@ -313,7 +299,12 @@ def show_portfolio_status(current_price):
     total_shares_count = 0
     total_free_shares = 0
 
-    for lot in portfolio.get("lots", []):
+    lots = portfolio.get("lots", [])
+    if not lots:
+        print("\n   ℹ️  Tu cartera está vacía. No tienes ningún paquete registrado todavía.")
+        print("   Usa la opción [5] del menú para registrar tu primera compra ESOP.\n")
+
+    for lot in lots:
         unlock_d = datetime.strptime(lot["unlock_date"], "%Y-%m-%d").date()
         grant_d = datetime.strptime(lot["grant_date"], "%Y-%m-%d").date()
         days_left = (unlock_d - today).days

@@ -68,22 +68,8 @@ def load_portfolio():
     if not DATA_FILE.exists():
         DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
         initial_data = {
-            "lots": [
-                {
-                    "id": "ESOP-2024",
-                    "year": 2024,
-                    "grant_date": "2024-05-15",
-                    "unlock_date": "2027-05-15",
-                    "purchased_shares": 15,
-                    "matching_shares": 12,
-                    "total_shares": 27,
-                    "purchase_price": 150.26,
-                    "total_paid": 2253.90,
-                    "status": "LOCKED",
-                    "notes": "Paquete 15 + 12 (descuento ~44.4%)"
-                }
-            ],
-            "history": []
+            "lots": [],
+            "sales_history": []
         }
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(initial_data, f, indent=2, ensure_ascii=False)
@@ -314,13 +300,32 @@ def delete_sale_api(sale_id):
 def simulate():
     data = request.json or {}
     sell_price = float(data.get("price", 189.30))
-    lot_id = data.get("lot_id", "ESOP-2024")
     reinvest_budget = float(data.get("reinvest_budget", 2500.0))
 
     portfolio = load_portfolio()
-    lot = next((l for l in portfolio.get("lots", []) if l["id"] == lot_id), None)
+    lots = portfolio.get("lots", [])
+    if not lots:
+        return jsonify({
+            "lot_id": None,
+            "total_shares": 0,
+            "purchased_shares": 0,
+            "matching_shares": 0,
+            "sell_price": sell_price,
+            "paid": 0.0,
+            "gross_proceeds": 0.0,
+            "capital_gain": 0.0,
+            "tax": 0.0,
+            "effective_tax_rate": 0.0,
+            "net_in_pocket": 0.0,
+            "reinvest_budget": reinvest_budget,
+            "surplus_after_reinvest": 0.0,
+            "is_mature": False,
+        })
+
+    lot_id = data.get("lot_id")
+    lot = next((l for l in lots if l["id"] == lot_id), None) if lot_id else lots[0]
     if not lot:
-        return jsonify({"error": "Lote no encontrado"}), 404
+        lot = lots[0]
 
     total_shares = lot["total_shares"]
     paid = lot["total_paid"]
@@ -407,6 +412,13 @@ def delete_lot_api(lot_id):
     portfolio["lots"] = new_lots
     save_portfolio(portfolio)
     return jsonify({"success": True, "deleted": lot_id})
+
+
+@app.route("/api/portfolio/clear", methods=["POST", "DELETE"])
+def clear_portfolio_api():
+    portfolio = {"lots": [], "sales_history": []}
+    save_portfolio(portfolio)
+    return jsonify({"success": True, "message": "Cartera vaciada con éxito"})
 
 
 @app.route("/download/calendar")

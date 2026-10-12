@@ -26,47 +26,8 @@ function calculateTaxSpain(capitalGain) {
   return Math.round(tax * 100) / 100;
 }
 
-const DEFAULT_INITIAL_LOTS = [
-  {
-    id: "ESOP-2023",
-    year: 2023,
-    grant_date: "2023-05-15",
-    unlock_date: "2026-05-15",
-    purchased_shares: 18,
-    matching_shares: 12,
-    total_shares: 30,
-    purchase_price: 119.06,
-    total_paid: 2143.08,
-    status: "UNLOCKED",
-    notes: "Paquete 18 + 12 (18 compradas + 12 gratis • Descuento 40%)"
-  },
-  {
-    id: "ESOP-2024",
-    year: 2024,
-    grant_date: "2024-05-15",
-    unlock_date: "2027-05-15",
-    purchased_shares: 30,
-    matching_shares: 20,
-    total_shares: 50,
-    purchase_price: 150.26,
-    total_paid: 4507.80,
-    status: "LOCKED",
-    notes: "Paquete 30 + 20 (30 compradas + 20 gratis • Descuento 40%)"
-  },
-  {
-    id: "ESOP-2025",
-    year: 2025,
-    grant_date: "2025-05-15",
-    unlock_date: "2028-05-15",
-    purchased_shares: 9,
-    matching_shares: 6,
-    total_shares: 15,
-    purchase_price: 162.78,
-    total_paid: 1465.02,
-    status: "LOCKED",
-    notes: "Paquete 9 + 6 (9 compradas + 6 gratis • Descuento 40%)"
-  }
-];
+// Por defecto, la cartera inicial está en blanco
+const DEFAULT_INITIAL_LOTS = [];
 
 function buildLocalData(currentPrice, lots, sales) {
   const today = new Date();
@@ -78,7 +39,7 @@ function buildLocalData(currentPrice, lots, sales) {
   let totalInvested = 0;
   let totalMarketVal = 0;
 
-  const lotsData = lots.map(lot => {
+  const lotsData = (lots || []).map(lot => {
     const grantD = new Date(lot.grant_date);
     const unlockD = new Date(lot.unlock_date);
     const daysLeft = Math.max(0, Math.ceil((unlockD - today) / msPerDay));
@@ -122,7 +83,7 @@ function buildLocalData(currentPrice, lots, sales) {
       timestamp: new Date().toLocaleTimeString('es-ES')
     },
     lots: lotsData,
-    sales_history: sales,
+    sales_history: sales || [],
     summary: {
       total_shares: totalShares,
       total_gift_shares: totalGiftShares,
@@ -130,17 +91,52 @@ function buildLocalData(currentPrice, lots, sales) {
       total_market_val: Math.round(totalMarketVal * 100) / 100,
       total_profit: totalProfit,
       total_profit_pct: totalProfitPct,
-      total_sales_count: sales.length,
-      total_sales_net: Math.round(sales.reduce((acc, s) => acc + (s.net_proceeds || 0), 0) * 100) / 100,
-      total_sales_gross: Math.round(sales.reduce((acc, s) => acc + (s.gross_proceeds || 0), 0) * 100) / 100,
-      total_sales_tax: Math.round(sales.reduce((acc, s) => acc + (s.tax || 0), 0) * 100) / 100,
-      total_sales_gain: Math.round(sales.reduce((acc, s) => acc + (s.capital_gain || 0), 0) * 100) / 100,
+      total_sales_count: (sales || []).length,
+      total_sales_net: Math.round((sales || []).reduce((acc, s) => acc + (s.net_proceeds || 0), 0) * 100) / 100,
+      total_sales_gross: Math.round((sales || []).reduce((acc, s) => acc + (s.gross_proceeds || 0), 0) * 100) / 100,
+      total_sales_tax: Math.round((sales || []).reduce((acc, s) => acc + (s.tax || 0), 0) * 100) / 100,
+      total_sales_gain: Math.round((sales || []).reduce((acc, s) => acc + (s.capital_gain || 0), 0) * 100) / 100,
     }
   };
 }
 
-const data = buildLocalData(187.26, DEFAULT_INITIAL_LOTS, []);
-console.log("Summary total shares:", data.summary.total_shares);
-console.log("Summary total invested:", data.summary.total_invested);
-console.log("Summary total market val:", data.summary.total_market_val);
-console.log("Lots count:", data.lots.length);
+// 1. Test Cartera Vacía (Por Defecto)
+const emptyData = buildLocalData(187.26, DEFAULT_INITIAL_LOTS, []);
+console.log("--- TEST ESTADO EN BLANCO ---");
+console.log("Summary total shares:", emptyData.summary.total_shares);
+console.log("Summary total invested:", emptyData.summary.total_invested);
+console.log("Summary total market val:", emptyData.summary.total_market_val);
+console.log("Lots count:", emptyData.lots.length);
+if (emptyData.lots.length !== 0 || emptyData.summary.total_shares !== 0) {
+  throw new Error("El estado por defecto debe estar en blanco (0 paquetes)");
+}
+console.log("✅ Cartera vacía verificada correctamente.");
+
+// 2. Test Registro de Paquete Personalizado y Eliminación
+const customLot = {
+  id: "ESOP-2024",
+  year: 2024,
+  grant_date: "2024-05-15",
+  unlock_date: "2027-05-15",
+  purchased_shares: 15,
+  matching_shares: 12,
+  total_shares: 27,
+  purchase_price: 150.26,
+  total_paid: 2253.90,
+  status: "LOCKED"
+};
+const populatedData = buildLocalData(187.26, [customLot], []);
+console.log("\n--- TEST PAQUETE PERSONALIZADO ---");
+console.log("Summary total shares:", populatedData.summary.total_shares);
+console.log("Summary total invested:", populatedData.summary.total_invested);
+console.log("Lots count:", populatedData.lots.length);
+if (populatedData.lots.length !== 1 || populatedData.summary.total_shares !== 27) {
+  throw new Error("El paquete personalizado no se calculó correctamente");
+}
+
+// Simular eliminación
+const deletedData = buildLocalData(187.26, [], []);
+if (deletedData.lots.length !== 0 || deletedData.summary.total_shares !== 0) {
+  throw new Error("Fallo al eliminar el paquete");
+}
+console.log("✅ Registro y eliminación verificados con éxito.");

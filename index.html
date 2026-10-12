@@ -247,7 +247,7 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
 </div>
 </div>
 <div class="flex items-center space-x-2 flex-shrink-0">
-<span class="text-[11px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800" id="badge-summary-cartera">5.111,10 €</span>
+<span class="text-[11px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800" id="badge-summary-cartera">0,00 €</span>
 <i class="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 transition-transform" data-lucide="chevron-down" id="chevron-cartera"></i>
 </div>
 </button>
@@ -263,11 +263,11 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
 <i class="w-3.5 h-3.5 sm:w-4 sm:h-4" data-lucide="wallet"></i>
 </div>
 </div>
-<div class="text-fluid-kpi font-extrabold text-slate-900 dark:text-white mb-1" id="kpiMarketVal">5.111,10 €</div>
+<div class="text-fluid-kpi font-extrabold text-slate-900 dark:text-white mb-1" id="kpiMarketVal">0,00 €</div>
 <div class="flex items-center space-x-1.5">
 <span class="inline-flex items-center text-xs font-semibold text-emerald-700 bg-emerald-100/80 dark:bg-emerald-950 dark:text-emerald-300 px-2 py-0.5 rounded-full" id="kpiProfitBadge">
 <i class="w-3 h-3 mr-1 inline" data-lucide="trending-up"></i>
-<span id="kpiProfitText">+2.857,20 € (+126.8%)</span>
+<span id="kpiProfitText">+0,00 € (+0%)</span>
 </span>
 </div>
 </div>
@@ -279,8 +279,8 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
 <i class="w-3.5 h-3.5 sm:w-4 sm:h-4" data-lucide="credit-card"></i>
 </div>
 </div>
-<div class="text-fluid-kpi font-extrabold text-slate-900 dark:text-white mb-1" id="kpiInvested">2.253,90 €</div>
-<p class="text-xs text-slate-500 dark:text-slate-400">15 acciones compradas a 150,26 €</p>
+<div class="text-fluid-kpi font-extrabold text-slate-900 dark:text-white mb-1" id="kpiInvested">0,00 €</div>
+<p class="text-xs text-slate-500 dark:text-slate-400" id="kpiInvestedSubtext">Sin compras registradas</p>
 </div>
 <!-- CARD 3: ACCIONES TOTALES -->
 <div class="bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/60 rounded-2xl p-4 sm:p-5 shadow-sm">
@@ -291,29 +291,29 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
 </div>
 </div>
 <div class="flex items-baseline space-x-2">
-<span class="text-fluid-kpi font-extrabold text-slate-900 dark:text-white" id="kpiSharesTotal">27</span>
-<span class="text-xs font-semibold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 dark:text-indigo-300 px-2 py-0.5 rounded-full">
-                  12 REGALADAS
+<span class="text-fluid-kpi font-extrabold text-slate-900 dark:text-white" id="kpiSharesTotal">0</span>
+<span class="text-xs font-semibold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 dark:text-indigo-300 px-2 py-0.5 rounded-full" id="kpiGiftSharesBadge">
+                  0 REGALADAS
                 </span>
 </div>
-<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Coste medio: <span class="font-semibold text-slate-700 dark:text-slate-300" id="kpiEffectiveCost">83,48 €</span> / acc.</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Coste medio: <span class="font-semibold text-slate-700 dark:text-slate-300" id="kpiEffectiveCost">0,00 €</span> / acc.</p>
 </div>
 <!-- CARD 4: CUENTA ATRÁS -->
 <div class="bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/60 rounded-2xl p-4 sm:p-5 shadow-sm">
 <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
-<span>Bloqueo 3 Años (ESOP 2024)</span>
+<span id="kpiLockTitle">Próximo Desbloqueo</span>
 <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400 flex items-center justify-center flex-shrink-0">
 <i class="w-3.5 h-3.5 sm:w-4 sm:h-4" data-lucide="lock"></i>
 </div>
 </div>
 <div class="flex items-baseline space-x-2">
-<span class="text-fluid-kpi font-extrabold text-slate-900 dark:text-white" id="kpiDaysLeft">224</span>
+<span class="text-fluid-kpi font-extrabold text-slate-900 dark:text-white" id="kpiDaysLeft">-</span>
 <span class="text-xs font-medium text-slate-500 dark:text-slate-400">días restantes</span>
 </div>
 <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mt-2 overflow-hidden">
-<div class="bg-gradient-to-r from-amber-500 to-emerald-500 h-2 rounded-full" id="kpiProgressBar" style="width: 79.5%"></div>
+<div class="bg-gradient-to-r from-amber-500 to-emerald-500 h-2 rounded-full" id="kpiProgressBar" style="width: 0%"></div>
 </div>
-<p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 text-right">Desbloqueo: 15/05/2027</p>
+<p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 text-right" id="kpiUnlockDateSubtext">Sin bloqueos pendientes</p>
 </div>
 </div>
 <!-- TABLA / TARJETAS DE LOTES -->
@@ -375,7 +375,7 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
 </div>
 </div>
 <div class="flex items-center space-x-2 flex-shrink-0">
-<span class="text-[11px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800" id="badge-summary-simulador">Neto: ~4.568 €</span>
+<span class="text-[11px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800" id="badge-summary-simulador">Neto: ~0,00 €</span>
 <i class="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 transition-transform" data-lucide="chevron-down" id="chevron-simulador"></i>
 </div>
 </button>
@@ -392,7 +392,7 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
 <div class="bg-slate-50/80 dark:bg-slate-800/50 rounded-xl p-3 border border-slate-200/80 dark:border-slate-700/60 flex items-center justify-between">
 <div>
 <span class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 uppercase">Estado Legal Lote</span>
-<span class="text-xs font-bold text-amber-600 dark:text-amber-400" id="simLotMatureStatus">🔒 Bloqueado</span>
+<span class="text-xs font-bold text-slate-400" id="simLotMatureStatus">-</span>
 </div>
 <button class="px-3.5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold shadow-sm transition inline-flex items-center space-x-1 cursor-pointer btn-sale-primary" style="background-color: #e11d48 !important; color: #ffffff !important;" onclick="openSaleModalFromSim()" type="button">
 <span>💸 Ejecutar Venta</span>
@@ -415,20 +415,20 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
 <!-- Resultados Simulador -->
 <div class="space-y-2 sm:space-y-3 text-xs sm:text-sm">
 <div class="flex justify-between items-center py-1.5 border-b border-slate-100 dark:border-slate-800 gap-2">
-<span class="text-slate-500 dark:text-slate-400">Cobro bruto venta (<span id="simSharesCountText">27</span> acc.):</span>
-<span class="font-semibold text-slate-900 dark:text-white" id="simGrossProceeds">5.111,10 €</span>
+<span class="text-slate-500 dark:text-slate-400">Cobro bruto venta (<span id="simSharesCountText">0</span> acc.):</span>
+<span class="font-semibold text-slate-900 dark:text-white" id="simGrossProceeds">0,00 €</span>
 </div>
 <div class="flex justify-between items-center py-1.5 border-b border-slate-100 dark:border-slate-800 gap-2">
 <span class="text-slate-500 dark:text-slate-400">Coste compra deducible:</span>
-<span class="font-semibold text-slate-900 dark:text-white" id="simCostBasis">-2.253,90 €</span>
+<span class="font-semibold text-slate-900 dark:text-white" id="simCostBasis">-0,00 €</span>
 </div>
 <div class="flex justify-between items-center py-1.5 border-b border-slate-100 dark:border-slate-800 gap-2">
 <span class="text-slate-500 dark:text-slate-400">Ganancia patrimonial:</span>
-<span class="font-bold text-emerald-600 dark:text-emerald-400" id="simCapitalGain">+2.857,20 €</span>
+<span class="font-bold text-emerald-600 dark:text-emerald-400" id="simCapitalGain">+0,00 €</span>
 </div>
 <div class="flex justify-between items-center py-1.5 border-b border-slate-100 dark:border-slate-800 gap-2">
 <span class="text-slate-500 dark:text-slate-400">Impuestos IRPF Ahorro:</span>
-<span class="font-semibold text-rose-500" id="simTax">-542,87 €</span>
+<span class="font-semibold text-rose-500" id="simTax">-0,00 €</span>
 </div>
 </div>
 <!-- RESULTADO NETO DESTACADO -->
@@ -437,15 +437,15 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
 <div class="text-[11px] uppercase font-semibold tracking-wider text-emerald-100 mb-1">
                 Dinero Limpio en tu Cuenta Bancaria
               </div>
-<div class="text-2xl sm:text-3xl font-black tracking-tight" id="simNetInPocket">4.568,23 €</div>
+<div class="text-2xl sm:text-3xl font-black tracking-tight" id="simNetInPocket">0,00 €</div>
 <p class="text-[11px] sm:text-xs text-emerald-100 mt-1" id="simLegalText">
-                ✅ Exención del regalo cumplida (Art. 42.3.f IRPF tras 3 años).
+                Registra un paquete en cartera para simular ventas y fiscalidad.
               </p>
 </div>
 <!-- EFECTO RUEDA -->
 <div class="mt-3 p-2.5 sm:p-3 bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/60 rounded-xl flex items-center justify-between text-xs gap-2">
 <span class="text-blue-900 dark:text-blue-200 font-medium">Sobrante tras pagar 2027 (~2.500 €):</span>
-<span class="font-bold text-blue-700 dark:text-blue-300 text-xs sm:text-sm flex-shrink-0" id="simSurplus">+2.068,23 €</span>
+<span class="font-bold text-blue-700 dark:text-blue-300 text-xs sm:text-sm flex-shrink-0" id="simSurplus">0,00 €</span>
 </div>
 </div>
 </div>
@@ -861,7 +861,7 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
         <span>•</span>
         <button onclick="importData()" class="hover:underline">📂 Cargar Copia</button>
         <span>•</span>
-        <button onclick="resetData()" class="text-rose-500 hover:underline">🔄 Restablecer 3 Paquetes</button>
+        <button onclick="resetData()" class="text-rose-500 hover:underline">🗑️ Vaciar Cartera</button>
       </div>
     </div>
   </footer>
@@ -910,55 +910,15 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
       }
     };
 
-    // CONFIGURACIÓN DE ALMACENAMIENTO V4
-    const STORAGE_KEY = "airbus_esop_portfolio_v4";
-    const SALES_STORAGE_KEY = "airbus_esop_sales_v4";
+    // CONFIGURACIÓN DE ALMACENAMIENTO V5
+    const STORAGE_KEY = "airbus_esop_portfolio_v5";
+    const SALES_STORAGE_KEY = "airbus_esop_sales_v5";
     const THEME_KEY = "airbus_esop_theme_mode";
     const TAB_KEY = "airbus_esop_active_tab";
     const PRICE_KEY = "airbus_esop_custom_price";
 
-    // LOS 3 PAQUETES INTEGRADOS
-    const DEFAULT_INITIAL_LOTS = [
-      {
-        id: "ESOP-2023",
-        year: 2023,
-        grant_date: "2023-05-15",
-        unlock_date: "2026-05-15",
-        purchased_shares: 18,
-        matching_shares: 12,
-        total_shares: 30,
-        purchase_price: 119.06,
-        total_paid: 2143.08,
-        status: "UNLOCKED",
-        notes: "Paquete 18 + 12 (18 compradas + 12 gratis • Descuento 40%)"
-      },
-      {
-        id: "ESOP-2024",
-        year: 2024,
-        grant_date: "2024-05-15",
-        unlock_date: "2027-05-15",
-        purchased_shares: 30,
-        matching_shares: 20,
-        total_shares: 50,
-        purchase_price: 150.26,
-        total_paid: 4507.80,
-        status: "LOCKED",
-        notes: "Paquete 30 + 20 (30 compradas + 20 gratis • Descuento 40%)"
-      },
-      {
-        id: "ESOP-2025",
-        year: 2025,
-        grant_date: "2025-05-15",
-        unlock_date: "2028-05-15",
-        purchased_shares: 9,
-        matching_shares: 6,
-        total_shares: 15,
-        purchase_price: 162.78,
-        total_paid: 1465.02,
-        status: "LOCKED",
-        notes: "Paquete 9 + 6 (9 compradas + 6 gratis • Descuento 40%)"
-      }
-    ];
+    // CARTERA INICIAL EN BLANCO: Cero paquetes predefinidos
+    const DEFAULT_INITIAL_LOTS = [];
 
     const DEFAULT_PACKAGES = [
       { id: 1, purchased: 3, matching: 2, total: 5 },
@@ -1024,6 +984,15 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
       memStorage[key] = val;
     }
 
+    // Limpieza de claves obsoletas con paquetes de prueba por defecto
+    try {
+      ["airbus_esop_portfolio_v4", "airbus_esop_sales_v4", "airbus_esop_portfolio_v3", "airbus_esop_portfolio", "airbus_esop_sales"].forEach(k => {
+        if (typeof window !== "undefined" && window.localStorage) {
+          window.localStorage.removeItem(k);
+        }
+      });
+    } catch (e) {}
+
     function getStoredLots() {
       try {
         const raw = safeGetItem(STORAGE_KEY);
@@ -1032,12 +1001,12 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
           if (Array.isArray(parsed)) return parsed;
         }
       } catch (e) {}
-      saveStoredLots(DEFAULT_INITIAL_LOTS);
-      return JSON.parse(JSON.stringify(DEFAULT_INITIAL_LOTS));
+      saveStoredLots([]);
+      return [];
     }
 
     function saveStoredLots(lots) {
-      safeSetItem(STORAGE_KEY, JSON.stringify(lots));
+      safeSetItem(STORAGE_KEY, JSON.stringify(lots || []));
     }
 
     function getStoredSales() {
@@ -1048,11 +1017,12 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
           if (Array.isArray(parsed)) return parsed;
         }
       } catch (e) {}
+      saveStoredSales([]);
       return [];
     }
 
     function saveStoredSales(sales) {
-      safeSetItem(SALES_STORAGE_KEY, JSON.stringify(sales));
+      safeSetItem(SALES_STORAGE_KEY, JSON.stringify(sales || []));
     }
 
     let currentLivePrice = parseFloat(safeGetItem(PRICE_KEY)) || 187.26;
@@ -1266,6 +1236,21 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
         const kpiSalesNet = document.getElementById('kpiSalesNet');
         if (kpiSalesNet) kpiSalesNet.textContent = formatEuro(data.summary.total_sales_net || 0);
 
+        const kiSub = document.getElementById('kpiInvestedSubtext');
+        if (kiSub) {
+          const purchasedCount = data.summary.total_shares - data.summary.total_gift_shares;
+          kiSub.textContent = data.summary.total_shares > 0 
+            ? `${purchasedCount} acc. compradas`
+            : 'Sin compras registradas';
+        }
+
+        const kgBadge = document.getElementById('kpiGiftSharesBadge');
+        if (kgBadge) {
+          kgBadge.textContent = `${data.summary.total_gift_shares} REGALADAS`;
+        }
+
+        const klTitle = document.getElementById('kpiLockTitle');
+        const kuDate = document.getElementById('kpiUnlockDateSubtext');
         const lockedLots = data.lots.filter(l => !l.is_mature && l.days_left > 0).sort((a,b) => a.days_left - b.days_left);
         const targetLot = lockedLots.length > 0 ? lockedLots[0] : (data.lots[0] || null);
         const kec = document.getElementById('kpiEffectiveCost');
@@ -1275,10 +1260,14 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
           if (kec) kec.textContent = formatEuro(targetLot.effective_cost_per_share);
           if (kdl) kdl.textContent = targetLot.days_left;
           if (kpb) kpb.style.width = targetLot.progress_pct + '%';
+          if (klTitle) klTitle.textContent = `Bloqueo 3 Años (${targetLot.id})`;
+          if (kuDate) kuDate.textContent = `Desbloqueo: ${targetLot.unlock_date}`;
         } else {
           if (kec) kec.textContent = formatEuro(0);
           if (kdl) kdl.textContent = '-';
           if (kpb) kpb.style.width = '0%';
+          if (klTitle) klTitle.textContent = 'Próximo Desbloqueo';
+          if (kuDate) kuDate.textContent = 'Sin bloqueos pendientes';
         }
 
         // Renderizado de Lotes e Historial
@@ -1287,7 +1276,7 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
 
         // Slider Inicial
         const slider = document.getElementById('priceSlider');
-        if (slider && !slider.dataset.userMoved) {
+        if (slider && (!slider.dataset || !slider.dataset.userMoved)) {
           slider.value = Math.round(currentLivePrice);
           const slbl = document.getElementById('sliderPriceLabel');
           if (slbl) slbl.textContent = formatEuro(currentLivePrice);
@@ -1359,8 +1348,34 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
       }
 
       if (!lots || lots.length === 0) {
-        if (tbody) tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-400">No hay lotes en cartera. ¡Registra tu primera compra con el botón superior!</td></tr>`;
-        if (mobileContainer) mobileContainer.innerHTML = `<div class="p-4 text-center text-xs text-slate-400 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">No hay lotes registrados.</div>`;
+        if (tbody) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="8" class="text-center py-10 px-4">
+                <div class="max-w-md mx-auto space-y-3">
+                  <div class="w-12 h-12 mx-auto rounded-2xl bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl font-bold">📦</div>
+                  <div class="font-bold text-slate-800 dark:text-slate-100 text-sm">Cartera en blanco (sin paquetes)</div>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">No tienes ningún paquete registrado todavía. Añade tus compras en las campañas Airbus ESOP para realizar el seguimiento en vivo y gestionar tus ventas.</p>
+                  <div>
+                    <button onclick="openLotModal()" class="inline-flex items-center space-x-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl shadow-sm transition cursor-pointer">
+                      <span>➕ Registrar mi primer paquete</span>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>`;
+        }
+        if (mobileContainer) {
+          mobileContainer.innerHTML = `
+            <div class="p-6 text-center bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3 shadow-xs">
+              <div class="w-12 h-12 mx-auto rounded-2xl bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl font-bold">📦</div>
+              <div class="font-bold text-slate-900 dark:text-white text-sm">Cartera en blanco</div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 text-xs leading-relaxed">No tienes ningún paquete registrado. Pulsa el botón inferior para registrar tu compra y calcular tus ganancias.</p>
+              <button onclick="openLotModal()" class="w-full inline-flex items-center justify-center space-x-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl shadow-sm transition cursor-pointer">
+                <span>➕ Registrar mi primer paquete</span>
+              </button>
+            </div>`;
+        }
         return;
       }
 
@@ -1387,10 +1402,10 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
               }
             </td>
             <td class="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
-              <button onclick="openSaleModalForLot('${lot.id}')" class="px-2.5 py-1 text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-400 rounded-lg border border-rose-200 dark:border-rose-900/60 transition">
+              <button onclick="openSaleModalForLot('${lot.id}')" class="px-2.5 py-1 text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-400 rounded-lg border border-rose-200 dark:border-rose-900/60 transition cursor-pointer">
                 Vender
               </button>
-              <button onclick="deleteLot('${lot.id}')" class="px-2.5 py-1 text-xs font-semibold text-slate-500 hover:text-slate-700 dark:text-slate-400 rounded-lg border border-slate-200 dark:border-slate-700 transition">
+              <button onclick="deleteLot('${lot.id}')" class="px-2.5 py-1 text-xs font-semibold text-rose-600 hover:text-white hover:bg-rose-600 dark:text-rose-400 dark:hover:bg-rose-600 dark:hover:text-white rounded-lg border border-rose-200 dark:border-rose-900/60 transition cursor-pointer">
                 Eliminar
               </button>
             </td>
@@ -1436,11 +1451,11 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
             </div>
             <div class="pt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-700/60">
               <span class="text-[11px] text-slate-400">Coste medio: ${formatEuro(lot.effective_cost_per_share)}</span>
-              <div class="space-x-2">
-                <button onclick="openSaleModalForLot('${lot.id}')" class="text-xs font-bold text-rose-600 hover:text-rose-700 dark:text-rose-400 hover:underline">
+              <div class="flex items-center space-x-2">
+                <button onclick="openSaleModalForLot('${lot.id}')" class="px-2.5 py-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition shadow-xs cursor-pointer">
                   Vender
                 </button>
-                <button onclick="deleteLot('${lot.id}')" class="text-xs text-slate-400 hover:text-rose-500">
+                <button onclick="deleteLot('${lot.id}')" class="px-2.5 py-1.5 text-xs font-semibold text-rose-600 hover:text-rose-700 dark:text-rose-400 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 rounded-lg border border-rose-200 dark:border-rose-900/60 transition cursor-pointer">
                   Eliminar
                 </button>
               </div>
@@ -1830,12 +1845,17 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
       };
 
       const lots = getStoredLots();
-      const existingIdx = lots.findIndex(l => l.id === newLot.id);
-      if (existingIdx >= 0) {
-        lots[existingIdx] = newLot;
+      let lotId = `ESOP-${gy}`;
+      if (lots.some(l => l.id === lotId)) {
+        let counter = 2;
+        while (lots.some(l => l.id === `${lotId}-${counter}`)) {
+          counter++;
+        }
+        newLot.id = `${lotId}-${counter}`;
       } else {
-        lots.push(newLot);
+        newLot.id = lotId;
       }
+      lots.push(newLot);
       lots.sort((a,b) => a.year - b.year);
       saveStoredLots(lots);
       closeLotModal();
@@ -1843,7 +1863,7 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
     }
 
     function deleteLot(lotId) {
-      if (!confirm(`¿Estás seguro de que deseas eliminar el lote ${lotId}?`)) return;
+      if (!confirm(`¿Estás seguro de que deseas eliminar el paquete ${lotId}? Esta acción lo quitará permanentemente de tu cartera.`)) return;
       const lots = getStoredLots().filter(l => l.id !== lotId);
       saveStoredLots(lots);
       loadData();
@@ -1931,7 +1951,9 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
     function openSaleModal() {
       const lots = getStoredLots();
       if (!lots || lots.length === 0) {
-        alert('No tienes lotes registrados en cartera para vender.');
+        if (confirm('No tienes ningún paquete en cartera para vender.\n\n¿Deseas registrar tu primer paquete ahora?')) {
+          openLotModal();
+        }
         return;
       }
       renderLotsTable(lots);
@@ -1943,7 +1965,9 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
     function openSaleModalForLot(lotId) {
       const lots = getStoredLots();
       if (!lots || lots.length === 0) {
-        alert('No tienes lotes registrados en cartera para vender.');
+        if (confirm('No tienes ningún paquete en cartera para vender.\n\n¿Deseas registrar tu primer paquete ahora?')) {
+          openLotModal();
+        }
         return;
       }
       openSaleModal();
@@ -1957,7 +1981,9 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
     function openSaleModalFromSim() {
       const lots = getStoredLots();
       if (!lots || lots.length === 0) {
-        alert('No tienes lotes registrados en cartera para vender.');
+        if (confirm('No tienes ningún paquete en cartera para vender.\n\n¿Deseas registrar tu primer paquete ahora?')) {
+          openLotModal();
+        }
         return;
       }
       const simSelect = document.getElementById('simLotSelect');
@@ -2099,11 +2125,13 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
     }
 
     function deleteSale(saleId) {
-      if (!confirm("¿Deseas anular este registro de venta y restaurar las acciones a la cartera?")) return;
       const sales = getStoredSales();
       const sIdx = sales.findIndex(s => s.id === saleId);
       if (sIdx === -1) return;
       const sale = sales[sIdx];
+
+      if (!confirm(`¿Deseas anular la venta de ${sale.shares_sold} acciones del lote ${sale.lot_id} y restaurarlas a tu cartera?`)) return;
+
       const lots = getStoredLots();
       const lotIdx = lots.findIndex(l => l.id === sale.lot_id);
 
@@ -2112,7 +2140,7 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
         lot.total_shares += sale.shares_sold;
         if (sale.snapshot_lot) {
           lot.purchased_shares = Math.round((lot.purchased_shares + (sale.snapshot_lot.purchased_shares - (lot.purchased_shares - sale.shares_sold * 0.6))) * 100) / 100;
-          lot.matching_shares = lot.total_shares - lot.purchased_shares;
+          lot.matching_shares = Math.max(0, lot.total_shares - lot.purchased_shares);
         }
         lot.total_paid = Math.round((lot.total_paid + sale.cost_basis) * 100) / 100;
       } else if (sale.snapshot_lot) {
@@ -2190,11 +2218,11 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
     }
 
     function resetData() {
-      if (!confirm('¿Deseas restablecer la cartera inicial con los 3 paquetes (2023 18+12, 2024 30+20 y 2025 9+6)?')) return;
-      saveStoredLots(DEFAULT_INITIAL_LOTS);
+      if (!confirm('¿Deseas vaciar por completo tu cartera y el historial de ventas para empezar de cero en blanco?')) return;
+      saveStoredLots([]);
       saveStoredSales([]);
       loadData();
-      alert('Cartera restablecida con los 3 paquetes.');
+      alert('Cartera vaciada con éxito. Ahora puedes registrar tus propios paquetes y gestionar tus ventas.');
     }
 
     function applyTheme(theme) {
