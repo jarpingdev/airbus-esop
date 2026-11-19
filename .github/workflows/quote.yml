@@ -1,0 +1,36 @@
+name: Actualizar cotización AIR.PA
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # cada 10 min (GitHub puede retrasarlo unos minutos)
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: quote-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Descargar cotización
+        run: python3 scripts/fetch_quote.py
+
+      - name: Publicar si cambió
+        run: |
+          if git diff --quiet -- quote.json; then
+            echo "Sin cambios en quote.json"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add quote.json
+          git commit -m "chore(quote): cotizacion AIR.PA $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push

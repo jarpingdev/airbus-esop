@@ -153,15 +153,15 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
 <div class="flex items-center justify-between sm:justify-end space-x-2 sm:space-x-3 w-full sm:w-auto">
 <div class="bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-1.5 flex items-center space-x-2 flex-1 sm:flex-initial justify-between sm:justify-start" id="stockBadge">
 <div class="flex items-center space-x-2">
-<span class="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
-<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-<span class="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-emerald-500"></span>
+<span class="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5" id="quotePingWrap">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" id="quotePing"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-amber-500" id="quoteDot"></span>
 </span>
 <span class="text-[11px] sm:text-xs text-slate-400 font-medium">AIR.PA</span>
 </div>
 <div class="flex items-center space-x-1.5">
-<span class="font-bold text-xs sm:text-sm text-white" id="headerPrice">189,30 €</span>
-<span class="text-[11px] sm:text-xs font-semibold text-emerald-400" id="headerChange">+1.20%</span>
+<span class="font-bold text-xs sm:text-sm text-white" id="headerPrice">—</span>
+<span class="text-[11px] sm:text-xs font-semibold text-slate-400" id="headerChange">cargando…</span>
 </div>
 </div>
 <button class="hidden sm:flex bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-xl transition border border-slate-700 items-center justify-center text-sm" onclick="toggleTheme()" title="Cambiar tema">
@@ -195,7 +195,8 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
 <div class="flex items-center justify-between sm:justify-end space-x-2 text-xs text-slate-500 dark:text-slate-400">
 <div class="flex items-center space-x-1.5">
 <i class="w-3.5 h-3.5 text-blue-500" data-lucide="clock"></i>
-<span>Cotización: <span class="font-medium text-slate-700 dark:text-slate-300" id="lastUpdated">Hoy</span></span>
+<span>Cotización: <span class="font-medium text-slate-700 dark:text-slate-300" id="lastUpdated">cargando…</span></span>
+<span class="hidden sm:inline text-[10px] text-slate-400" id="quoteSource"></span>
 </div>
 <button class="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition" onclick="refreshData()" title="Refrescar cotización">
 <i class="w-3.5 h-3.5 text-slate-600 dark:text-slate-300" data-lucide="refresh-cw"></i>
@@ -1025,10 +1026,117 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
       safeSetItem(SALES_STORAGE_KEY, JSON.stringify(sales || []));
     }
 
-    let currentLivePrice = parseFloat(safeGetItem(PRICE_KEY)) || 187.26;
+    // ─── COTIZACIÓN AIR.PA ──────────────────────────────────────────────────────
+    // Regla: sin números inventados. O hay dato real con su hora, o se dice que no lo hay.
+    const QUOTE_KEY = "airbus_esop_last_quote_v1";
+    const QUOTE_BASE = "https://query1.finance.yahoo.com/v8/finance/chart/AIR.PA?interval=1d&range=1d";
+    const QUOTE_REFRESH_MS = 60 * 1000;
+    const QUOTE_SOURCES = [
+      // 1) Fichero del propio sitio, refrescado por GitHub Actions (mismo origen: sin CORS)
+      { name: "quote.json", build: () => `./quote.json?_=${Date.now()}` },
+      // 2) Yahoo a través de un proxy CORS (Yahoo no manda cabeceras CORS al navegador)
+      { name: "yahoo (proxy)", build: () => `https://api.allorigins.win/raw?url=${encodeURIComponent(QUOTE_BASE + "&_=" + Date.now())}` }
+    ];
+
+    let liveQuote = null;      // { price, prevClose, change, pct, marketTime, source }
+    let quoteError = null;     // último error, para poder mostrarlo en vez de callarlo
+    let quoteTimer = null;
+    let currentLivePrice = 0;
     let currentTab = safeGetItem(TAB_KEY) || 'cartera';
     let globalStatus = null;
-    let currentSimPrice = 187.26;
+    let currentSimPrice = 0;
+
+    function normalizeQuote(raw) {
+      if (!raw) return null;
+      const meta = (raw.chart && raw.chart.result && raw.chart.result[0]) ? raw.chart.result[0].meta : raw;
+      const price = parseFloat(meta.regularMarketPrice !== undefined ? meta.regularMarketPrice : meta.price);
+      const prevRaw = [meta.chartPreviousClose, meta.previousClose, meta.prevClose].find(v => parseFloat(v) > 0);
+      const prevClose = prevRaw !== undefined ? parseFloat(prevRaw) : null;
+      if (!(price > 0)) return null;
+      let marketTime = null;
+      if (meta.regularMarketTime) {
+        marketTime = typeof meta.regularMarketTime === 'number' ? meta.regularMarketTime * 1000 : Date.parse(meta.regularMarketTime);
+      } else if (meta.marketTime) {
+        marketTime = Date.parse(meta.marketTime);
+      }
+      const change = prevClose ? price - prevClose : 0;
+      const pct = prevClose ? (change / prevClose) * 100 : 0;
+      return { price, prevClose, change, pct, marketTime: isNaN(marketTime) ? null : marketTime, source: meta.source || null };
+    }
+
+    function saveQuoteCache(q) {
+      safeSetItem(QUOTE_KEY, JSON.stringify({ price: q.price, prevClose: q.prevClose, change: q.change, pct: q.pct, marketTime: q.marketTime, source: q.source, fetchedAt: Date.now() }));
+    }
+
+    function hydrateQuoteCache() {
+      try {
+        const raw = safeGetItem(QUOTE_KEY);
+        if (!raw) return false;
+        const q = JSON.parse(raw);
+        if (!q || !(parseFloat(q.price) > 0)) return false;
+        liveQuote = {
+          price: parseFloat(q.price), prevClose: q.prevClose, change: q.change, pct: q.pct,
+          marketTime: q.marketTime, source: q.source, cached: true, fetchedAt: q.fetchedAt
+        };
+        currentLivePrice = liveQuote.price;
+        if (!currentSimPrice) currentSimPrice = liveQuote.price;
+        return true;
+      } catch (e) { return false; }
+    }
+
+    function applyQuote(q, sourceName) {
+      liveQuote = { ...q, source: sourceName || q.source || null, cached: false, fetchedAt: Date.now() };
+      quoteError = null;
+      currentLivePrice = q.price;
+      if (!currentSimPrice) currentSimPrice = q.price;
+      saveQuoteCache(liveQuote);
+      loadData(currentLivePrice);
+      renderQuoteState();
+    }
+
+    function quoteAgeMinutes() {
+      if (!liveQuote || !liveQuote.marketTime) return null;
+      return Math.max(0, Math.round((Date.now() - liveQuote.marketTime) / 60000));
+    }
+
+    function renderQuoteState() {
+      const hp = document.getElementById('headerPrice');
+      const hc = document.getElementById('headerChange');
+      const lu = document.getElementById('lastUpdated');
+      const dot = document.getElementById('quoteDot');
+      const ping = document.getElementById('quotePing');
+      const src = document.getElementById('quoteSource');
+
+      if (!liveQuote) {
+        if (hp) hp.textContent = '—';
+        if (hc) { hc.textContent = 'sin datos'; hc.className = 'text-[11px] sm:text-xs font-semibold text-slate-400'; }
+        if (lu) lu.textContent = quoteError ? 'sin conexión · reintentando' : 'cargando…';
+        if (src) src.textContent = '';
+        if (dot) dot.className = 'relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-rose-500';
+        if (ping) ping.classList.add('hidden');
+        return;
+      }
+
+      if (hp) hp.textContent = formatEuro(liveQuote.price);
+      if (hc) {
+        const up = liveQuote.pct >= 0;
+        hc.textContent = (up ? '+' : '') + liveQuote.pct.toFixed(2).replace('.', ',') + '%';
+        hc.className = 'text-[11px] sm:text-xs font-semibold ' + (up ? 'text-emerald-400' : 'text-rose-400');
+      }
+      const age = quoteAgeMinutes();
+      const hhmm = liveQuote.marketTime
+        ? new Date(liveQuote.marketTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Paris' })
+        : null;
+      if (lu) {
+        lu.textContent = hhmm
+          ? `mercado ${hhmm} h${(age !== null ? ` · hace ${age} min` : '')}${liveQuote.cached ? ' · caché' : ''}`
+          : 'sin hora de mercado';
+      }
+      if (src) src.textContent = liveQuote.source ? `fuente: ${liveQuote.source}` : '';
+      const fresh = !liveQuote.cached && age !== null && age <= 20;
+      if (dot) dot.className = 'relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 ' + (fresh ? 'bg-emerald-500' : 'bg-amber-500');
+      if (ping) ping.classList.toggle('hidden', !fresh);
+    }
 
     function formatEuro(val) {
       if (isNaN(val) || val === null || val === undefined) val = 0;
@@ -1169,9 +1277,10 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
       return {
         quote: {
           price: currentPrice,
-          change: 1.80,
-          pct_change: 0.97,
-          timestamp: new Date().toLocaleTimeString('es-ES')
+          change: liveQuote ? liveQuote.change : 0,
+          pct_change: liveQuote ? Math.round(liveQuote.pct * 100) / 100 : 0,
+          timestamp: liveQuote && liveQuote.marketTime ? new Date(liveQuote.marketTime).toISOString() : null,
+          has_data: !!liveQuote
         },
         lots: lotsData,
         sales_history: sales,
@@ -1197,13 +1306,8 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
         const data = buildLocalData(currentLivePrice);
         globalStatus = data;
 
-        // Header
-        const hp = document.getElementById('headerPrice');
-        if (hp) hp.textContent = formatEuro(data.quote.price);
-        const hc = document.getElementById('headerChange');
-        if (hc) hc.textContent = (data.quote.change >= 0 ? '+' : '') + data.quote.pct_change + '%';
-        const lu = document.getElementById('lastUpdated');
-        if (lu) lu.textContent = data.quote.timestamp;
+        // Header: el estado de la cotización lo pinta renderQuoteState()
+        renderQuoteState();
 
         // KPIs Cartera
         const kmv = document.getElementById('kpiMarketVal');
@@ -2154,17 +2258,46 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
       loadData();
     }
 
-    async function fetchLivePrice() {
+    async function fetchQuoteFrom(source) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 12000);
       try {
-        const res = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/AIR.PA?interval=1d', { mode: 'cors' });
-        if (res.ok) {
-          const d = await res.json();
-          const meta = d.chart.result[0].meta;
-          currentLivePrice = parseFloat(meta.regularMarketPrice);
-          loadData();
-          return;
+        const res = await fetch(source.build(), { cache: 'no-store', signal: ctrl.signal });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const q = normalizeQuote(await res.json());
+        if (!q) throw new Error('respuesta sin precio');
+        return q;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    async function fetchLivePrice() {
+      let lastErr = null;
+      for (const source of QUOTE_SOURCES) {
+        try {
+          const q = await fetchQuoteFrom(source);
+          applyQuote(q, source.name);
+          return true;
+        } catch (e) {
+          lastErr = e;
         }
-      } catch (e) {}
+      }
+      // Ninguna fuente respondió: se conserva (y se marca) la última cotización conocida
+      quoteError = lastErr;
+      renderQuoteState();
+      return false;
+    }
+
+    function startQuoteAutoRefresh() {
+      if (quoteTimer) clearInterval(quoteTimer);
+      quoteTimer = setInterval(() => {
+        if (document.hidden) return;   // no gastar peticiones con la pestaña de fondo
+        fetchLivePrice();
+      }, QUOTE_REFRESH_MS);
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) fetchLivePrice();
+      });
     }
 
     function refreshData() {
@@ -2255,8 +2388,11 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
       try {
         initTheme();
         updateTabsUI();
+        hydrateQuoteCache();       // última cotización guardada (si la hay) antes de pintar
         loadData();
+        renderQuoteState();
         fetchLivePrice();
+        startQuoteAutoRefresh();
         if (typeof window !== "undefined" && window.lucide && window.lucide.createIcons) {
           window.lucide.createIcons();
         }
