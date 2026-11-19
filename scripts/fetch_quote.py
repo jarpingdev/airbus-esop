@@ -101,6 +101,7 @@ def from_boursorama(text):
         "currency": "EUR",
         "exchange": "Euronext Paris (Boursorama)",
         "source": "boursorama",
+        "timeIsFetch": True,   # la página no publica hora de negociación
     }
 
 

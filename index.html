@@ -1061,11 +1061,11 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
       }
       const change = prevClose ? price - prevClose : 0;
       const pct = prevClose ? (change / prevClose) * 100 : 0;
-      return { price, prevClose, change, pct, marketTime: isNaN(marketTime) ? null : marketTime, source: meta.source || null, exchange: meta.exchange || meta.fullExchangeName || null };
+      return { price, prevClose, change, pct, marketTime: isNaN(marketTime) ? null : marketTime, source: meta.source || null, exchange: meta.exchange || meta.fullExchangeName || null, timeIsFetch: !!meta.timeIsFetch };
     }
 
     function saveQuoteCache(q) {
-      safeSetItem(QUOTE_KEY, JSON.stringify({ price: q.price, prevClose: q.prevClose, change: q.change, pct: q.pct, marketTime: q.marketTime, source: q.source, exchange: q.exchange, fetchedAt: Date.now() }));
+      safeSetItem(QUOTE_KEY, JSON.stringify({ price: q.price, prevClose: q.prevClose, change: q.change, pct: q.pct, marketTime: q.marketTime, source: q.source, exchange: q.exchange, timeIsFetch: !!q.timeIsFetch, fetchedAt: Date.now() }));
     }
 
     function hydrateQuoteCache() {
@@ -1076,7 +1076,7 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
         if (!q || !(parseFloat(q.price) > 0)) return false;
         liveQuote = {
           price: parseFloat(q.price), prevClose: q.prevClose, change: q.change, pct: q.pct,
-          marketTime: q.marketTime, source: q.source, exchange: q.exchange, cached: true, fetchedAt: q.fetchedAt
+          marketTime: q.marketTime, source: q.source, exchange: q.exchange, timeIsFetch: !!q.timeIsFetch, cached: true, fetchedAt: q.fetchedAt
         };
         currentLivePrice = liveQuote.price;
         if (!currentSimPrice) currentSimPrice = liveQuote.price;
@@ -1128,9 +1128,14 @@ html:not(.dark) body { background-color: #f8fafc; color: #0f172a; }
         ? new Date(liveQuote.marketTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Paris' })
         : null;
       if (lu) {
-        lu.textContent = hhmm
-          ? `mercado ${hhmm} h${(age !== null ? ` · hace ${age} min` : '')}${liveQuote.cached ? ' · caché' : ''}`
-          : 'sin hora de mercado';
+        if (liveQuote.timeIsFetch) {
+          // La fuente no publica hora de negociación: se dice "descargado", no "mercado"
+          lu.textContent = `descargado hace ${age !== null ? age : '?'} min${liveQuote.cached ? ' · caché' : ''}`;
+        } else {
+          lu.textContent = hhmm
+            ? `mercado ${hhmm} h${(age !== null ? ` · hace ${age} min` : '')}${liveQuote.cached ? ' · caché' : ''}`
+            : 'sin hora de mercado';
+        }
       }
       if (src) src.textContent = liveQuote.exchange ? `${liveQuote.exchange}${liveQuote.cached ? ' · caché' : ''}` : (liveQuote.source ? `fuente: ${liveQuote.source}` : '');
       const fresh = !liveQuote.cached && age !== null && age <= 20;
