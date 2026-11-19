@@ -45,6 +45,33 @@ Ambas versiones (Web y Terminal) comparten la misma base de datos en:
 
 ---
 
+## 📈 De dónde sale la cotización (AIR.PA)
+
+La versión web publicada en **https://jarpingdev.github.io/airbus-esop/** no llama a Yahoo
+desde el navegador: Yahoo no envía cabeceras CORS y el navegador bloquea la petición, que es
+lo que hacía que la página mostrara siempre un precio fijo antiguo.
+
+Ahora el dato llega por un fichero del propio sitio:
+
+1. `.github/workflows/quote.yml` ejecuta `scripts/fetch_quote.py` cada 10 minutos (y a cada push).
+2. El script prueba en orden: Yahoo (Euronext París) → Boursorama (Euronext París) →
+   Börse Frankfurt (misma ISIN) → proxies CORS de Yahoo. Los runners de GitHub y las IP de
+   datacenter reciben `429 Too Many Requests` de Yahoo, por eso existe el respaldo.
+3. Escribe `quote.json` en la raíz y lo commitea; GitHub Pages lo sirve con el mismo origen
+   que la página, así que no hay CORS de por medio.
+4. `index.html` intenta `./quote.json`, luego el proxy de Yahoo, y si todo falla conserva la
+   última cotización guardada **marcada como caché** en vez de inventar un precio.
+
+La cabecera muestra siempre la hora del dato, su antigüedad y el mercado del que procede
+(Euronext París o XETRA), con un semáforo: verde = recién descargado, ámbar = caché o dato
+con retraso, rojo = sin datos.
+
+> Los datos gratuitos de Euronext van con ~15 minutos de retraso: eso es un límite de la
+> fuente, no un fallo de la app. Para tiempo real puro hace falta una fuente de pago
+> (Twelve Data, EOD Historical Data, proveedor Euronext).
+
+---
+
 ## ☁️ Acceso y Ejecución en Servidor Remoto Ubuntu
 
 La aplicación está completamente desplegada y configurada como servicio permanente en tu servidor Ubuntu (`82.70.77.208`):
