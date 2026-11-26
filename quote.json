@@ -1,12 +1,12 @@
 {
-  "price": 190.0,
-  "prevClose": 193.6404,
-  "change": -3.6404,
-  "pct": -1.88,
-  "marketTime": "2026-11-26T02:27:29+00:00",
+  "price": 194.92,
+  "prevClose": 189.999,
+  "change": 4.921,
+  "pct": 2.59,
+  "marketTime": "2026-11-26T11:24:10+00:00",
   "currency": "EUR",
   "exchange": "Euronext Paris (Boursorama)",
   "source": "boursorama",
   "timeIsFetch": true,
-  "fetchedAt": "2026-11-26T02:27:29.338797+00:00"
+  "fetchedAt": "2026-11-26T11:24:10.941400+00:00"
 }
